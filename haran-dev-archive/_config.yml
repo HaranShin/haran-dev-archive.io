@@ -17,16 +17,16 @@ minimal_mistakes_skin    : "dirt" # "air", "aqua", "contrast", "dark", "dirt", "
 # Site Settings
 locale                   : "us"
 rtl                      : # true, false (default) # turns direction of the page into right to left for RTL languages
-title                    : "Note"
+title                    : "haran-dev-archive"
 title_separator          : "|"
 subtitle                 : # site tagline that appears below site title in masthead
-name                     : "LBC"
-description              : "이범철의 블로그입니다."
-url                      : "https://yera10.github.io"
-baseurl                  : # the subpath of your site, e.g. "/blog"
+name                     : "신하란"
+description              : "신하란의 블로그입니다."
+url      : "https://HaranShin.github.io"
+baseurl  : "/haran-dev-archive.io"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : /assets/images/lbc.png # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+logo                     : /assets/images/shr.png # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
 breadcrumbs              : # true, false (default)
 words_per_minute         : 200
@@ -114,7 +114,7 @@ analytics:
 # Site Author
 author:
   # name             : "Lee Beom Chul"
-  avatar           : "/assets/images/Fu0EiwWaUAAm66M.jpg"
+  avatar           : "/assets/images/회사우사기.jpg"
   bio              : ""
   location         : 
   email            :
