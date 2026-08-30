@@ -23,10 +23,10 @@ subtitle                 : # site tagline that appears below site title in masth
 name                     : "신하란"
 description              : "신하란의 블로그입니다."
 url: "https://haranshin.github.io"
-baseurl: "/haran-dev-archive.io"
+baseurl: ""
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : /assets/images/shr_usagi_small.png # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+logo: "/assets/images/shr_usagi_small.jpg" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
 breadcrumbs              : # true, false (default)
 words_per_minute         : 200
@@ -114,7 +114,7 @@ analytics:
 # Site Author
 author:
   # name             : "Lee Beom Chul"
-  avatar           : "/assets/images/회사우사기.png"
+  avatar           : "/assets/images/회사우사기.jpg"
   bio              : ""
   location         : 
   email            :
@@ -144,7 +144,7 @@ footer:
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/Yera10"
+      url: "https://github.com/HaranShin"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       # url:
@@ -269,6 +269,7 @@ plugins:
   - jekyll-gist
   - jekyll-feed
   - jekyll-include-cache
+  - jekyll-archives
 
 # mimic GitHub Pages with --safe
 whitelist:
@@ -290,10 +291,10 @@ whitelist:
 #  - <base_path>/categories/my-awesome-category/index.html ~> path: /categories/
 #  - <base_path>/my-awesome-category/index.html ~> path: /
 category_archive:
-  type: liquid
+  type: jekyll-archives
   path: /categories/
 tag_archive:
-  type: liquid
+  type: jekyll-archives
   path: /tags/
 # https://github.com/jekyll/jekyll-archives
 jekyll-archives:
