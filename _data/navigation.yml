@@ -38,6 +38,15 @@ sidebar_main:
   - title: "Tags"
     url: /tags/
 
+sidebar:
+  - title: "Categories"
+    children:
+      - title: "TOOLS"
+        url: /categories/#tools
+      - title: "CODING"
+        url: /categories/#coding
+      - title: "DATABASE"
+        url: /categories/#database
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/
   # - title: "Sample Posts"
