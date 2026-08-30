@@ -1,0 +1,118 @@
+<!-- sum = 사이트의 모든 포스트 개수 -->
+{% assign sum = site.posts | size %}
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label }}</label>
+  <ul class="nav__items" id="category_tag_menu">
+    <!--Total Posts-->
+    <li>
+      <span class="nav__sub-title">Total Posts <span class="taxonomy__count">{{ sum }}</span></span>
+    </li>
+
+    {% assign parent_categories = "" | split: "" %}   <!-- 부모 카테고리 리스트 -->
+    {% assign category_tree = "" | split: "" %}   <!-- '부모|자식|포스트수' 리스트 -->
+
+    <!-- 1. 부모 카테고리, 카테고리 정보 저장 -->
+    {% for category in site.categories %}
+      {% assign cat_name = category[0] %}
+      {% assign post_count = category[1].size %}
+
+      <!-- 카테고리 이름에 '/'가 있으면 부모-자식 구조로 처리 -->
+      {% if cat_name contains '/' %}
+        {% assign cat_parts = cat_name | split: '/' %}
+        {% assign parent = cat_parts[0] %}
+        {% assign child = cat_parts[1] %}
+
+        <!-- 부모 카테고리 추가 -->
+        {% unless parent_categories contains parent %}
+          {% assign parent_categories = parent_categories | push: parent %}
+        {% endunless %}
+
+        <!-- category_tree에 추가 -->
+        {% assign tree_item = parent | append: "|" | append: child | append: "|" | append: post_count %}
+        {% assign category_tree = category_tree | push: tree_item %}
+      {% else %}
+        <!-- '/'가 없으면 부모 카테고리로 -->
+        {% unless parent_categories contains cat_name %}
+          {% assign parent_categories = parent_categories | push: cat_name %}
+        {% endunless %}
+        {% assign tree_item = cat_name | append: "||" | append: post_count %}
+        {% assign category_tree = category_tree | push: tree_item %}
+      {% endif %}
+    {% endfor %}
+
+    <!-- 2. 부모 포스트 계산 및 정렬-->
+    {% assign parent_with_count = "" | split: "" %}
+    {% for parent in parent_categories %}
+      {% assign parent_total = 0 %}
+      {% for tree_item in category_tree %}
+        {% assign parts = tree_item | split: "|" %}
+        {% if parts[0] == parent %}
+          {% assign parent_total = parent_total | plus: parts[2] %}
+        {% endif %}
+      {% endfor %}
+      {% assign padded_count = parent_total | prepend: "0000" | slice: -4, 4 %}     <!-- 포스트 수 4자리 패딩 -->
+      {% assign sort_key = padded_count | append: "|" | append: parent | append: "|" | append: parent_total %}
+      {% assign parent_with_count = parent_with_count | push: sort_key %}
+    {% endfor %}
+    {% assign sorted_parents_data = parent_with_count | sort | reverse %}   <!-- 포스트 많은 순 정렬 -->
+
+    <!-- 3. 부모 카테고리 별 렌더링 -->
+    {% for parent_data in sorted_parents_data %}
+      {% assign parent_info = parent_data | split: "|" %}
+      {% assign parent = parent_info[1] %}
+      {% assign parent_total = parent_info[2] %}
+
+      <!-- 부모 카테고리 출력 -->
+      <li>
+        <div class="nav__sub-title" style="cursor: pointer; user-select: none;">
+          <span onclick="toggleCategory('{{ parent | slugify }}')">
+            <span class="toggle-icon" id="icon-{{ parent | slugify }}">▶</span> {{ parent }} <span class="taxonomy__count">{{ parent_total }}</span>
+          </span>
+        </div>
+
+        <!-- 자식 카테고리 리스트 -->
+        <ul class="nav__sub-items" id="cat-{{ parent | slugify }}" style="display: none; margin-left: 1em;">
+          {% assign has_children = false %}
+          {% assign children_list = "" | split: "" %}
+
+          {% for tree_item in category_tree %}
+            {% assign parts = tree_item | split: "|" %}
+            {% if parts[0] == parent and parts[1] != "" %}
+              {% assign has_children = true %}
+              <!-- 포스트수 패딩 + 자식명 + 포스트수 -->
+              {% assign padded = parts[2] | prepend: "0000" | slice: -4, 4 %}
+              {% assign child_data = padded | append: "|" | append: parts[1] | append: "|" | append: parts[2] %}
+              {% assign children_list = children_list | push: child_data %}
+            {% endif %}
+          {% endfor %}
+
+          <!-- 포스트 수 기준 내림차순 정렬 -->
+          {% assign sorted_children = children_list | sort | reverse %}
+
+          <!-- 자식 카테고리 출력 -->
+          {% for child_data in sorted_children %}
+            {% assign child_info = child_data | split: "|" %}
+            {% assign child_name = child_info[1] %}
+            {% assign child_count = child_info[2] %}
+            <li>
+              <a href="/categories/#{{ parent | append: '/' | append: child_name | slugify }}" class="">
+                  {{ child_name }} <span class="taxonomy__count">{{ child_count }}</span>
+              </a>
+            </li>
+          {% endfor %}
+          
+          <!-- 자식 카테고리가 없는 경우 -->
+          {% unless has_children %}
+            <li>
+              <a href="/categories/#{{ parent | slugify }}" class="">
+                All <span class="taxonomy__count">{{ parent_total }}</span>
+              </a>
+            </li>
+          {% endunless %}
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

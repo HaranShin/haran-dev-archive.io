@@ -1,0 +1,12 @@
+[submodule "_posts/commands"]
+	path = _posts/commands
+	url = https://github.com/Yera10/commands.git
+[submodule "_posts/algorithm-note"]
+	path = _posts/algorithm-note
+	url = https://github.com/Yera10/algorithm-note.git
+[submodule "blog_posting"]
+	path = _posts/blog_posting
+	url = https://github.com/Yera10/blog_posting.git
+[submodule "Deep-Learning-Study"]
+	path = _posts/Deep-Learning-Study
+	url = https://github.com/Yera10/Deep-Learning-Study.git
