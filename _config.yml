@@ -10,9 +10,9 @@ title_separator          : "|"
 subtitle                 :
 name                     : "신하란"
 description              : "신하란의 블로그입니다."
-url                      : "https://haranshin.github.io"
-baseurl                  : "/python_haran-dev-archive"
-repository               : "HaranShin/python_haran-dev-archive"
+url        : "https://haranshin.github.io"
+baseurl    : "/haran-dev-archive.io"
+repository : "HaranShin/haran-dev-archive.io"
 teaser                   :
 logo                     : "/assets/images/shr_usagi_small.jpg"
 masthead_title           :
