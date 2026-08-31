@@ -5,16 +5,28 @@
     <!-- 모바일 환경을 위한 접기/펼치기 토글 스위치 -->
     <input id="ac-toc" name="accordion-toc" type="checkbox" />
     <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle Menu" }}</label>
+    
     <ul class="nav__items">
       {% for nav_item in navigation %}
         <li>
+          <!-- [수정] 대목차를 클릭하면 그 아래의 고유 구역(ul)을 직접 보였다 안 보였다 토글하게 스위치를 내장했습니다 -->
           {% if nav_item.title %}
-            <span class="nav__sub-title">{{ nav_item.title }}</span>
+            <span class="nav__sub-title" 
+                  onclick="var el = document.getElementById('menu-{{ nav_item.title | slugify }}'); if(el.style.display==='none'){el.style.display='block';}else{el.style.display='none';}" 
+                  style="cursor: pointer; display: block; padding: 5px 0; user-select: none;">
+              ▶ {{ nav_item.title }}
+            </span>
           {% endif %}
+          
+          <!-- [수정] 하위 목록 보관함에 고유 ID 명찰을 부여하고, 기본 상태는 열려있도록(display: block) 설정했습니다 -->
           {% if nav_item.children %}
-            <ul>
+            <ul id="menu-{{ nav_item.title | slugify }}" style="display: block; padding-left: 15px;">
               {% for child in nav_item.children %}
-                <li><a href="{{ child.url | relative_url }}" {% if child.url == page.url %}class="active"{% endif %}>{{ child.title }}</a></li>
+                <li>
+                  <a href="{{ child.url | relative_url }}" {% if child.url == page.url %}class="active"{% endif %}>
+                    {{ child.title }}
+                  </a>
+                </li>
               {% endfor %}
             </ul>
           {% endif %}
