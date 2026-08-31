@@ -1,7 +1,7 @@
 <!-- navigation 변수 가져오기 -->
 {% assign navigation = site.data.navigation[include.nav] %}
 
-<!-- 카테고리 포스트 수 MAX 값 계산 ([1].size로 정확하게 수정) -->
+<!-- 카테고리 포스트 수 MAX 값 계산 ([1].size로 수정) -->
 {% assign categories_max = 0 %}
 {% for category in site.categories %}
   {% if category[1].size > categories_max %}
@@ -9,7 +9,7 @@
   {% endif %}
 {% endfor %}
 
-<!-- TAG 포스트 수 MAX 값 계산 ([1].size로 정확하게 수정) -->
+<!-- TAG 포스트 수 MAX 값 계산 ([1].size로 수정) -->
 {% assign tags_max = 0 %}
 {% for tag in site.tags %}
   {% if tag[1].size > tags_max %}
@@ -25,13 +25,13 @@
   <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle Menu" }}</label>
 
   <ul class="nav__items">
-    <!-- [수정] 대목차 클릭 시 자바스크립트 함수를 실행하도록 onclick과 커서 모양을 연동했습니다 -->
+    <!-- 대목차 클릭 시 자바스크립트 함수를 실행하도록 onclick을 연결했습니다 -->
     <span class="nav__sub-title" onclick="toggleCategory('nav-categories')" style="cursor: pointer;">
       {{ navigation[0].title }}
     </span>
-    <!-- [수정] 기본 상태에서 부드럽게 열려있도록 고유 ID와 display 스타일을 부여했습니다 -->
+    <!-- 기본 상태에서 펼쳐져 있도록 display: block과 고유 ID를 부여했습니다 -->
     <li id="nav-categories" style="display: block;">
-      <!-- 카테고리 리스트 : 포스트 많은 순 정렬 (원래 로직 100% 완벽 유지) -->
+      <!-- 카테고리 리스트 : 포스트 많은 순 정렬 (원래 로직 100% 유지) -->
       {% for i in (1..categories_max) reversed %}
         {% for category in site.categories %}
           {% if category[1].size == i %}
@@ -52,7 +52,6 @@
   <input id="ac-toc" name="accordion-toc" type="checkbox" />
   <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle Menu" }}</label>
   <ul class="nav__items">
-    <!-- [수정] 태그 대목차도 클릭 시 여닫히도록 동일하게 연동했습니다 -->
     <span class="nav__sub-title" onclick="toggleCategory('nav-tags')" style="cursor: pointer;">
       {{ navigation[1].title }}
     </span>
