@@ -1,33 +1,11 @@
-# main links
-
-# main:
-#   - title: "By Year"
-#     url: /year-archive/
-#   - title: "Search"
-#     url: /search/
-  
-# docs:
-#   - title: "대목차"
-#     children:
-#       - title: "Category"
-#         url: /categories/
-#       - title: "Tag"
-#         url: /tags/
-
-# counts:
-#   - title: "카테고리"
-#     use: true
-#   - title: "태그"
-#     use: true
-
-
+# 상단 메뉴바 설정
 main:
   - title: "By Year"
     url: /year-archive/
   - title: "Search"
     url: /search/
 
-# 왼쪽/오른쪽 사이드바
+# 왼쪽/오른쪽 사이드바 (★테마 공식 표준 띄어쓰기 규격입니다)
 sidebar_main:
   - title: "TOOLS"
     children:
@@ -41,11 +19,3 @@ sidebar_main:
     children:
       - title: "SQL"
         url: /categories/#sql
-  # - title: "About"
-  #   url: https://mmistakes.github.io/minimal-mistakes/about/
-  # - title: "Sample Posts"
-  #   url: /year-archive/
-  # - title: "Sample Collections"
-  #   url: /collection-archive/
-  # - title: "Sitemap"
-  #   url: /sitemap/
