@@ -4,8 +4,8 @@
 <!-- 카테고리별 글 개수 중 가장 큰 값(MAX) 찾기 -->
 {% assign categories_max = 0 %}
 {% for category in site.categories %}
-  {% if category[1].size > categories_max %}
-    {% assign categories_max = category[1].size %}
+  {% if category.size > categories_max %}
+    {% assign categories_max = category.size %}
   {% endif %}
 {% endfor %}
 
@@ -15,29 +15,27 @@
   <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle Menu" }}</label>
 
   <ul class="nav__items">
-    <!-- navigation.yml에 등록된 대목차들(TOOLS, CODING, DATABASE 등)을 하나씩 가져와서 그려줍니다 -->
     {% for nav_item in navigation %}
       <li>
-        <!-- 대목차 이름 출력 및 클릭 이벤트 연결 -->
-        <!-- 클릭하면 각 카테고리 이름에 맞는 구역(id)을 찾아서 열고 닫습니다 -->
-        <span class="nav__sub-title" onclick="toggleCategory('menu-{{ nav_item.title | slugify }}')" style="cursor: pointer;">
+        <!-- [수정] 스크립트 에러를 원천 차단하기 위해 onclick 안에 직접 작동 명령어를 심었습니다 -->
+        <span class="nav__sub-title" 
+              onclick="var el = document.getElementById('menu-{{ nav_item.title | slugify }}'); if(el.style.display==='none'){el.style.display='block';}else{el.style.display='none';}" 
+              style="cursor: pointer; display: block; padding: 5px 0;">
           ▶ {{ nav_item.title }}
         </span>
 
-        <!-- 하위 카테고리 목록이 들어가는 공간 (기본 상태는 펼쳐진 block 상태) -->
+        <!-- 하위 카테고리 목록 공간 (기본 상태는 펼쳐진 block 상태) -->
         <ul id="menu-{{ nav_item.title | slugify }}" style="display: block; padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
           
-          <!-- 내 블로그 전체에서 현재 대목차 이름과 똑같은 카테고리를 찾아 자동으로 글을 정렬해 띄웁니다 -->
           {% for i in (1..categories_max) reversed %}
             {% for category in site.categories %}
-              <!-- 대목차 이름과 블로그 카테고리 이름이 일치하고, 글 개수가 일치할 때만 출력 -->
               {% assign target_title = nav_item.title | downcase %}
-              {% assign current_category = category[0] | downcase %}
+              {% assign current_category = category | downcase %}
               
-              {% if current_category == target_title and category[1].size == i %}
+              {% if current_category == target_title and category.size == i %}
                 <li style="list-style: none; margin-bottom: 5px;">
-                  <a href="/categories/#{{ category[0] | slugify }}">
-                    <strong style="font-size: 15px;">{{ category[0] }}</strong> 
+                  <a href="/categories/#{{ category | slugify }}">
+                    <strong style="font-size: 15px;">{{ category }}</strong> 
                     <span class="taxonomy__count" style="font-size: 13px; color: #999;">({{ i }})</span>
                   </a>
                 </li>
