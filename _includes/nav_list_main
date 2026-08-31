@@ -63,15 +63,18 @@
       {% assign parent_info = parent_data | split: "|" %}
       {% assign parent = parent_info[1] %}
       {% assign parent_total = parent_info[2] %}
+      
+      <!-- 주소 충돌을 막기 위해 부모 이름을 완전히 소문자화(slugify)한 고유 명찰 키를 생성합니다 -->
+      {% assign parent_key = parent | slugify | downcase %}
 
       <!-- 부모 카테고리 출력 -->
       <li>
-        <!-- 대목차 이름과 글자 크기, 대소문자 변환(tools, coding 등 일치화)을 깔끔하게 정리했습니다 -->
-        <div class="nav__sub-title" style="cursor: pointer; user-select: none; font-size: 15px; font-weight: bold; text-transform: uppercase;">
+        <div class="nav__sub-title" style="cursor: pointer; user-select: none; font-size: 15px; font-weight: bold;">
+          <!-- [교정] 클릭 시 찾아갈 방(id)과 화살표(icon)의 이름을 완벽하게 소문자 키로 일치시켰습니다 -->
           <span onclick="
-            var el = document.getElementById('cat-{{ parent | slugify }}');
-            var icon = document.getElementById('icon-{{ parent | slugify }}');
-            if(el.style.display === 'none') {
+            var el = document.getElementById('cat-{{ parent_key }}');
+            var icon = document.getElementById('icon-{{ parent_key }}');
+            if(el.style.display === 'none' || el.style.display === '') {
               el.style.display = 'block';
               icon.innerText = '▼';
             } else {
@@ -79,12 +82,12 @@
               icon.innerText = '▶';
             }
           ">
-            <span class="toggle-icon" id="icon-{{ parent | slugify }}">▶</span> {{ parent }} <span class="taxonomy__count">{{ parent_total }}</span>
+            <span class="toggle-icon" id="icon-{{ parent_key }}">▶</span> {{ parent }} <span class="taxonomy__count">{{ parent_total }}</span>
           </span>
         </div>
 
-        <!-- 자식 카테고리 리스트 보관함 구역 (기본 디스플레이 상태를 숨김(none) 처리했습니다) -->
-        <ul class="nav__sub-items" id="cat-{{ parent | slugify }}" style="display: none; margin-left: 1em; padding-left: 10px;">
+        <!-- 자식 카테고리 리스트 보관함 (id 명찰을 완벽하게 소문자 키로 일치시켜 구멍을 막았습니다) -->
+        <ul class="nav__sub-items" id="cat-{{ parent_key }}" style="display: none; margin-left: 1em; padding-left: 10px;">
           {% assign has_children = false %}
           {% assign children_list = "" | split: "" %}
 
@@ -114,7 +117,7 @@
             </li>
           {% endfor %}
           
-          <!-- 자식 카테고리가 없는 경우 기본 전체(All) 링크 출력 -->
+          <!-- 자식 카테고리가 없는 경우 -->
           {% unless has_children %}
             <li style="list-style: none; margin-top: 5px; margin-bottom: 5px;">
               <a href="/categories/#{{ parent | slugify }}" style="font-size: 14px;">
