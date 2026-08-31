@@ -1,7 +1,7 @@
 <!-- navigation 변수 가져오기 -->
 {% assign navigation = site.data.navigation[include.nav] %}
 
-<!-- 카테고리 포스트 수 MAX 값 계산 ([1].size로 수정) -->
+<!-- 카테고리별 글 개수 중 가장 큰 값(MAX) 찾기 -->
 {% assign categories_max = 0 %}
 {% for category in site.categories %}
   {% if category[1].size > categories_max %}
@@ -9,65 +9,44 @@
   {% endif %}
 {% endfor %}
 
-<!-- TAG 포스트 수 MAX 값 계산 ([1].size로 수정) -->
-{% assign tags_max = 0 %}
-{% for tag in site.tags %}
-  {% if tag[1].size > tags_max %}
-    {% assign tags_max = tag[1].size %}
-  {% endif %}
-{% endfor %}
-
 <nav class="nav__list">
-  <!-- 첫 카테고리 활성화 됐을 때 -->
-  {% if navigation[0].use %}
-  <!-- 접기/펼치기 토글 버튼 -->
+  <!-- 접기/펼치기 토글 버튼 (모바일용 기본 메뉴) -->
   <input id="ac-toc" name="accordion-toc" type="checkbox" />
   <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle Menu" }}</label>
 
   <ul class="nav__items">
-    <!-- 대목차 클릭 시 자바스크립트 함수를 실행하도록 onclick을 연결했습니다 -->
-    <span class="nav__sub-title" onclick="toggleCategory('nav-categories')" style="cursor: pointer;">
-      {{ navigation[0].title }}
-    </span>
-    <!-- 기본 상태에서 펼쳐져 있도록 display: block과 고유 ID를 부여했습니다 -->
-    <li id="nav-categories" style="display: block;">
-      <!-- 카테고리 리스트 : 포스트 많은 순 정렬 (원래 로직 100% 유지) -->
-      {% for i in (1..categories_max) reversed %}
-        {% for category in site.categories %}
-          {% if category[1].size == i %}
-            <ul style="padding-top: 0px; padding-bottom: 0px;">
-              <a href="/categories/#{{ category[0] | slugify }}">
-                <strong style="font-size: 16px;">{{ category[0] }}</strong> <span class="taxonomy__count" style="font-size: 14px;">{{ i }}</span>
-              </a>
-            </ul>
-          {% endif %}
-        {% endfor %}
-      {% endfor %}
-    </li>
-  </ul>
-  {% endif %}
+    <!-- navigation.yml에 등록된 대목차들(TOOLS, CODING, DATABASE 등)을 하나씩 가져와서 그려줍니다 -->
+    {% for nav_item in navigation %}
+      <li>
+        <!-- 대목차 이름 출력 및 클릭 이벤트 연결 -->
+        <!-- 클릭하면 각 카테고리 이름에 맞는 구역(id)을 찾아서 열고 닫습니다 -->
+        <span class="nav__sub-title" onclick="toggleCategory('menu-{{ nav_item.title | slugify }}')" style="cursor: pointer;">
+          ▶ {{ nav_item.title }}
+        </span>
 
-  <!-- 태그 활성화 됐을 때 -->
-  {% if navigation[1].use %}
-  <input id="ac-toc" name="accordion-toc" type="checkbox" />
-  <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle Menu" }}</label>
-  <ul class="nav__items">
-    <span class="nav__sub-title" onclick="toggleCategory('nav-tags')" style="cursor: pointer;">
-      {{ navigation[1].title }}
-    </span>
-    <li id="nav-tags" style="display: block;">
-    {% for i in (1..tags_max) reversed %}
-      {% for tag in site.tags %}
-        {% if tag[1].size == i %}
-          <ul style="padding-top: 0px; padding-bottom: 0px;">
-            <a href="/tags/#{{ tag[0] | slugify }}">
-              <strong style="font-size: 16px;">{{ tag[0] }}</strong> <span class="taxonomy__count" style="font-size: 14px;">{{ i }}</span>
-            </a>
-          </ul>
-        {% endif %}
-      {% endfor %}
+        <!-- 하위 카테고리 목록이 들어가는 공간 (기본 상태는 펼쳐진 block 상태) -->
+        <ul id="menu-{{ nav_item.title | slugify }}" style="display: block; padding-left: 15px; padding-top: 5px; padding-bottom: 5px;">
+          
+          <!-- 내 블로그 전체에서 현재 대목차 이름과 똑같은 카테고리를 찾아 자동으로 글을 정렬해 띄웁니다 -->
+          {% for i in (1..categories_max) reversed %}
+            {% for category in site.categories %}
+              <!-- 대목차 이름과 블로그 카테고리 이름이 일치하고, 글 개수가 일치할 때만 출력 -->
+              {% assign target_title = nav_item.title | downcase %}
+              {% assign current_category = category[0] | downcase %}
+              
+              {% if current_category == target_title and category[1].size == i %}
+                <li style="list-style: none; margin-bottom: 5px;">
+                  <a href="/categories/#{{ category[0] | slugify }}">
+                    <strong style="font-size: 15px;">{{ category[0] }}</strong> 
+                    <span class="taxonomy__count" style="font-size: 13px; color: #999;">({{ i }})</span>
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+          
+        </ul>
+      </li>
     {% endfor %}
-    </li>
   </ul>
-  {% endif %}
 </nav>
