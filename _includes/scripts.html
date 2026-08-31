@@ -27,17 +27,3 @@
     <script src="{{ script | relative_url }}"></script>
   {% endfor %}
 {% endif %} 
-
-<script>
-// 사이드바 카테고리 접고 펼치기 함수
-function toggleCategory(id) {
-  var element = document.getElementById(id);
-  if (!element) return;
-  
-  if (element.style.display === "none" || element.style.display === "") {
-    element.style.display = "block";
-  } else {
-    element.style.display = "none";
-  }
-}
-</script>
