@@ -110,8 +110,6 @@ plugins:
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
-  # ★ 이 줄 맨 앞에 #을 붙여서 아래처럼 꺼주세요!
-  # - jekyll-include-cache
 
 whitelist:
   - jekyll-paginate
@@ -136,7 +134,6 @@ compress_html:
 
 # Defaults
 defaults:
-  # _posts 폴더 안의 모든 글(type: posts)에 공통으로 적용한다는 뜻입니다
   - scope:
       path: ""
       type: "posts"
@@ -146,8 +143,6 @@ defaults:
       read_time: true
       comments: true
       share: true
-      # ★ 바로 이 줄을 똑같이 추가해 주셔야 합니다!
       sidebar:
         nav: "sidebar_main"
-
-date_format: "%Y-%m-%d"
+      date_format: "%Y-%m-%d"
