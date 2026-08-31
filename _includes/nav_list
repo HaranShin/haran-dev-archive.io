@@ -1,48 +1,25 @@
-<!-- navigation 변수 가져오기 -->
 {% assign navigation = site.data.navigation[include.nav] %}
 
-<!-- 카테고리별 글 개수 중 가장 큰 값(MAX) 계산 -->
-{% assign categories_max = 0 %}
-{% for category in site.categories %}
-  {% if category.size > categories_max %}
-    {% assign categories_max = category.size %}
-  {% endif %}
-{% endfor %}
-
 <nav class="nav__list">
-  <!-- 모바일 화면용 전체 메뉴 접기/펼치기 토글 스위치 -->
-  <input id="ac-toc" name="accordion-toc" type="checkbox" />
-  <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle Menu" }}</label>
-
-  <ul class="nav__items">
-    <!-- 테마 표준 양식에 맞추어 navigation.yml의 대목차들을 자동으로 그려줍니다 -->
-    {% for nav_item in navigation %}
-      <li>
-        <!-- 대목차 이름 출력 (테마 기본 스타일 적용) -->
-        <span class="nav__sub-title">{{ nav_item.title }}</span>
-        
-        <!-- 하위 카테고리 목록이 담기는 보관함 구역 -->
-        <ul>
-          <!-- 사용자님이 원하신 '전체 글 자동 수집 및 포스트 순 정렬' 핵심 엔진 탑재 -->
-          {% for i in (1..categories_max) reversed %}
-            {% for category in site.categories %}
-              {% assign target_title = nav_item.title | downcase %}
-              {% assign current_category = category | downcase %}
-              
-              <!-- 대목차 이름과 내 글의 카테고리 이름이 일치하는 것만 쏙쏙 골라 정렬합니다 -->
-              {% if current_category == target_title and category.size == i %}
-                <li>
-                  <a href="/categories/#{{ category | slugify }}">
-                    <strong>{{ category }}</strong> 
-                    <span class="taxonomy__count">({{ i }})</span>
-                  </a>
-                </li>
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
-        </ul>
-
-      </li>
-    {% endfor %}
-  </ul>
+  {% if navigation[0] %}
+    <!-- 모바일 환경을 위한 접기/펼치기 토글 스위치 -->
+    <input id="ac-toc" name="accordion-toc" type="checkbox" />
+    <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle Menu" }}</label>
+    <ul class="nav__items">
+      {% for nav_item in navigation %}
+        <li>
+          {% if nav_item.title %}
+            <span class="nav__sub-title">{{ nav_item.title }}</span>
+          {% endif %}
+          {% if nav_item.children %}
+            <ul>
+              {% for child in nav_item.children %}
+                <li><a href="{{ child.url | relative_url }}" {% if child.url == page.url %}class="active"{% endif %}>{{ child.title }}</a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 </nav>

@@ -22,10 +22,6 @@
 
 
 main:
-  - title: "Categories"
-    url: /categories/
-  - title: "Tags"
-    url: /tags/
   - title: "By Year"
     url: /year-archive/
   - title: "Search"
@@ -33,20 +29,18 @@ main:
 
 # 왼쪽/오른쪽 사이드바
 sidebar_main:
-  - title: "Categories"
-    url: /categories/
-  - title: "Tags"
-    url: /tags/
-
-sidebar:
-  - title: "Categories"
+  - title: "TOOLS"
     children:
-      - title: "TOOLS"
-        url: /categories/#tools
-      - title: "CODING"
-        url: /categories/#coding
-      - title: "DATABASE"
-        url: /categories/#database
+      - title: "PowerBI"
+        url: /categories/#powerbi
+  - title: "CODING"
+    children:
+      - title: "All"
+        url: /categories/#all
+  - title: "DATABASE"
+    children:
+      - title: "SQL"
+        url: /categories/#sql
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/
   # - title: "Sample Posts"
