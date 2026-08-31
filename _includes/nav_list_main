@@ -66,8 +66,8 @@
 
       <!-- 부모 카테고리 출력 -->
       <li>
-        <div class="nav__sub-title" style="cursor: pointer; user-select: none;">
-          <!-- [교정] 외부 자바스크립트 충돌을 피하기 위해, 클릭 시 본인의 하위 메뉴(cat-명찰)를 직접 찾아 열고 화살표 모양(icon-명찰)을 바꾸는 인라인 코드로 수정했습니다 -->
+        <!-- 대목차 이름과 글자 크기, 대소문자 변환(tools, coding 등 일치화)을 깔끔하게 정리했습니다 -->
+        <div class="nav__sub-title" style="cursor: pointer; user-select: none; font-size: 15px; font-weight: bold; text-transform: uppercase;">
           <span onclick="
             var el = document.getElementById('cat-{{ parent | slugify }}');
             var icon = document.getElementById('icon-{{ parent | slugify }}');
@@ -83,8 +83,8 @@
           </span>
         </div>
 
-        <!-- 자식 카테고리 리스트 -->
-        <ul class="nav__sub-items" id="cat-{{ parent | slugify }}" style="display: none; margin-left: 1em;">
+        <!-- 자식 카테고리 리스트 보관함 구역 (기본 디스플레이 상태를 숨김(none) 처리했습니다) -->
+        <ul class="nav__sub-items" id="cat-{{ parent | slugify }}" style="display: none; margin-left: 1em; padding-left: 10px;">
           {% assign has_children = false %}
           {% assign children_list = "" | split: "" %}
 
@@ -107,17 +107,17 @@
             {% assign child_info = child_data | split: "|" %}
             {% assign child_name = child_info[1] %}
             {% assign child_count = child_info[2] %}
-            <li>
-              <a href="/categories/#{{ parent | append: '/' | append: child_name | slugify }}" class="">
+            <li style="list-style: none; margin-top: 5px; margin-bottom: 5px;">
+              <a href="/categories/#{{ parent | append: '/' | append: child_name | slugify }}" style="font-size: 14px;">
                   {{ child_name }} <span class="taxonomy__count">{{ child_count }}</span>
               </a>
             </li>
           {% endfor %}
           
-          <!-- 자식 카테고리가 없는 경우 -->
+          <!-- 자식 카테고리가 없는 경우 기본 전체(All) 링크 출력 -->
           {% unless has_children %}
-            <li>
-              <a href="/categories/#{{ parent | slugify }}" class="">
+            <li style="list-style: none; margin-top: 5px; margin-bottom: 5px;">
+              <a href="/categories/#{{ parent | slugify }}" style="font-size: 14px;">
                 All <span class="taxonomy__count">{{ parent_total }}</span>
               </a>
             </li>
